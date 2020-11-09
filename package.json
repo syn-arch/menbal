@@ -1,0 +1,17 @@
+{
+  "name": "menbal",
+  "version": "1.0.0",
+  "description": "learn api with football-data.org",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "adiatna sukmana",
+  "license": "ISC",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.13.0"
+  }
+}
