@@ -29,7 +29,6 @@
 .content {
     margin-top: -70px;
     position: relative;
-    height: 130px;
 }
 
 .icon-content {
@@ -41,12 +40,34 @@
     font-weight: bold;
 }
 
+/* board */
+.board {
+    margin-top: 50px;
+}
+
+.board-title {
+    margin-bottom: 30px;
+}
+
+.offline-img, .maps-img, .onboard-img {
+    width: 80%;
+}
+
 @media screen and (max-width: 600px) {
     .hero-title {
         margin-top: 30%;
     }
-    
+
     .content {
         margin-top: 30px;
+    }
+
+    .flex-s {
+        display: flex;
+        flex-direction: column; /* Stack on top */
+    }
+
+    .box-a {
+        order: 2; /* Go down, bring Box B up */
     }
 }
