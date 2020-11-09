@@ -19,14 +19,16 @@
         <nav class="transparent z-depth-1">
             <div class="container">
                 <div class="nav-wrapper">
-                    <a href="/index.html#home" class="brand-logo">Menbal</a>
-                    <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="fa fa-bars"></i></a>
+                    <a href="/index.html#home" class="brand-logo toggle-scroll-color">Menbal</a>
+                    <a href="#" data-target="mobile-demo" class="sidenav-trigger">
+                        <i class="fa fa-bars toggle-scroll-color"></i>
+                    </a>
                     <ul id="nav-mobile" class="right hide-on-med-and-down">
-                        <li><a href="/index.html#home">Home</a></li>
-                        <li><a href="/index.html#match">Match</a></li>
-                        <li><a href="/index.html#scores">Scores</a></li>
-                        <li><a href="/index.html#team">Team</a></li>
-                        <li><a href="/index.html#favourite">Favourite Team</a></li>
+                        <li><a class="toggle-scroll-color" href="/index.html#home">Home</a></li>
+                        <li><a class="toggle-scroll-color" href="/index.html#match">Match</a></li>
+                        <li><a class="toggle-scroll-color" href="/index.html#scores">Scores</a></li>
+                        <li><a class="toggle-scroll-color" href="/index.html#team">Team</a></li>
+                        <li><a class="toggle-scroll-color" href="/index.html#favourite">Favourite Team</a></li>
                     </ul>
                 </div>
             </div>
@@ -45,22 +47,22 @@
     <div class="hero">
         <div class="overlay">
             <div class="container white-text center-align">
-                <h3 class=" hero-title">Lorem ipsum dolor sit amet.</h3>
+                <h3 class="hero-title">Lorem ipsum dolor sit amet.</h3>
                 <p class="hero-description ">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic cum nobis doloremque reprehenderit
                     repellendus dicta excepturi assumenda porro eius aliquid commodi, cupiditate provident similique
                     amet
                     optio quasi perferendis rem praesentium.
                 </p>
-                <a href="#" class="blue waves-effect waves-light btn">Discover</a>
-                <a href="#" class="blue waves-effect waves-light btn">Discover</a>
+                <a href="#content" class="blue waves-effect waves-light btn">Discover</a>
+                <a href="#competitions" class="blue waves-effect waves-light btn">Discover</a>
             </div>
         </div>
     </div>
     <!-- end hero -->
 
     <!-- card -->
-    <div class="content">
+    <div class="content" id="content">
         <div class="container">
             <div class="row">
                 <div class="col s12 m10 offset-m1 white body-content z-depth-1">
@@ -132,7 +134,7 @@
     <!-- end board -->
 
     <!-- competitions -->
-    <div class="competitions">
+    <div class="competitions" id="competitions">
         <div class="overlay-competitions">
             <h5 class="white-text center-align title-competitions">List Of Competitions</h5>
             <div class="container white-text">
@@ -240,7 +242,7 @@
         <div class="container">
             <form action="" class="form-subscribe">
                 <div class="row">
-                    <div class="input-field col m6 offset-m3">
+                    <div class="input-field col s12 m6 offset-m3">
                         <i class="fa fa-envelope prefix"></i>
                         <input autocomplete="off" placeholder="jhondoe@example.com" id="you_email" type="text"
                             class="validate">
@@ -248,7 +250,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="input-field col m6 offset-m3">
+                    <div class="input-field col s12 m6 offset-m3">
                         <button class="btn blue submit-btn" type="submit">Submit</button>
                     </div>
                 </div>

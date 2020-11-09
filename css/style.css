@@ -2,6 +2,14 @@
     font-family: 'Poppins';
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+nav {
+    transition: .2s ease-in;
+}
+
 /* hero */
 
 .hero {
@@ -87,6 +95,30 @@
     width: 100%;
 }
 
+/* section */
+.section {
+    margin-top: -65px;
+    height: 50vh;
+    width: 100%;
+    background-image: url('/img/ball.jpg');
+    background-position: center;
+    background-size: cover;
+}
+
+.overlay-section {
+    background: linear-gradient(to right, #8d2de2da, #4b00e0cb);
+    position: absolute;
+    height: 50vh;
+    width: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.section-title {
+    margin-top: 140px;
+}
 
 /* responsive */
 
