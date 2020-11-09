@@ -2,6 +2,8 @@
     font-family: 'Poppins';
 }
 
+/* hero */
+
 .hero {
     margin-top: -65px;
     height: 75vh;
@@ -25,6 +27,8 @@
 .hero-title {
     margin-top: 15%;
 }
+
+/* card */
 
 .content {
     margin-top: -70px;
@@ -52,6 +56,29 @@
 .offline-img, .maps-img, .onboard-img {
     width: 80%;
 }
+
+/* competitions */
+.competitions {
+    margin-top: 40px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-image: url('/img/field.jpg');
+    width: 100%;
+}
+
+.overlay-competitions {
+    background: linear-gradient(to right, #8d2de2da, #4b00e0cb);
+    width: 100%;
+    padding: 40px;
+}
+
+.title-competitions {
+    margin-bottom: 30px;
+}
+
+
+/* responsive */
 
 @media screen and (max-width: 600px) {
     .hero-title {
