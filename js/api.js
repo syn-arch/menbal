@@ -327,7 +327,7 @@ function getFavourites() {
         var favouritesHTML = "";
         favourites.forEach(function (favourite) {
             favouritesHTML += `
-                <div class="col s6 m4">
+                <div class="col s12 m4">
                     <div class="card">
                         <div class="card-image">
                             <a href="/pages/team.html?id=${favourite.id}&saved=true">
@@ -344,6 +344,7 @@ function getFavourites() {
                 </div>
                 `;
         });
+
         // Sisipkan komponen card ke dalam elemen dengan id #body-content
         document.querySelector(".body-favourites").innerHTML = favouritesHTML;
 
