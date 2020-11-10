@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="learn api with football-data.org">
     <title>Menbal</title>
+    <link rel="shorcut icon" href="favicon.ico">
     <link rel="stylesheet" href="/node_modules/materialize-css/dist/css/materialize.min.css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/node_modules/@fortawesome/fontawesome-free/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
-    <link rel="preload">
 </head>
 
 <body>
@@ -20,29 +20,34 @@
         <nav class="transparent z-depth-0">
             <div class="container">
                 <div class="nav-wrapper">
-                    <a href="/index.html" class="brand-logo toggle-scroll-color">Menbal</a>
+                    <a href="#home" class="brand-logo toggle-scroll-color">Menbal</a>
                     <a href="#" data-target="mobile-demo" class="sidenav-trigger">
                         <i class="fa fa-bars toggle-scroll-color"></i>
                     </a>
-                    <ul id="nav-mobile" class="right hide-on-med-and-down">
-                        <li><a class="toggle-scroll-color" href="/index.html">Home</a></li>
-                        <li><a class="toggle-scroll-color" href="/index.html#match">Match</a></li>
-                        <li><a class="toggle-scroll-color" href="/index.html#scores">Scores</a></li>
-                        <li><a class="toggle-scroll-color" href="/index.html#favourite">Favourite Team</a></li>
+                    <ul id="topnav" class="right hide-on-med-and-down topnav">
+                        <li><a class="toggle-scroll-color" href="#home">Home</a></li>
+                        <li><a class="toggle-scroll-color" href="#match">Match</a></li>
+                        <li><a class="toggle-scroll-color" href="#scores">Scores</a></li>
+                        <li><a class="toggle-scroll-color" href="#favourite">Favourite Team</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
     </div>
     <ul class="sidenav" id="mobile-demo">
-        <li><a href="/index.html#home">Home</a></li>
-        <li><a href="/index.html#match">Match</a></li>
-        <li><a href="/index.html#scores">Scores</a></li>
-        <li><a href="/index.html#favourite">Favourite Team</a></li>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#match">Match</a></li>
+        <li><a href="#scores">Scores</a></li>
+        <li><a href="#favourite">Favourite Team</a></li>
     </ul>
     <!-- end navbar -->
 
-    <div class="wrapper"></div>
+    <div id="app">
+        <div class="lds-ripple">
+            <div></div>
+            <div></div>
+        </div>
+    </div>
 
     <!-- footer -->
     <footer class="page-footer purple darken-4">
@@ -58,10 +63,10 @@
                 <div class="col l4 offset-l2 s12">
                     <h5 class="white-text">Quick Links</h5>
                     <ul>
-                        <li><a class="grey-text text-lighten-3" href="/index.html">Home</a></li>
-                        <li><a class="grey-text text-lighten-3" href="/index.html#match">Match</a></li>
-                        <li><a class="grey-text text-lighten-3" href="/index.html#scores">Scores</a></li>
-                        <li><a class="grey-text text-lighten-3" href="/index.html#favourite">Favourite Team</a></li>
+                        <li><a class="grey-text text-lighten-3" href="#home">Home</a></li>
+                        <li><a class="grey-text text-lighten-3" href="#match">Match</a></li>
+                        <li><a class="grey-text text-lighten-3" href="#scores">Scores</a></li>
+                        <li><a class="grey-text text-lighten-3" href="#favourite">Favourite Team</a></li>
                     </ul>
                 </div>
             </div>
@@ -81,7 +86,7 @@
 <script src="/node_modules/@fortawesome/fontawesome-free/js/all.min.js"></script>
 <script src="/js/script.js"></script>
 <script src="/js/idb.js"></script>
-<script src="/js/api.js"></script>
 <script src="/js/db.js"></script>
+<script src="/js/api.js"></script>
 
 </html>
