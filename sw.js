@@ -1,4 +1,4 @@
-const CACHE_NAME = "menbal-v2";
+const CACHE_NAME = "menbal-v1";
 const urlsToCache = [
     "/",
     "/index.html",

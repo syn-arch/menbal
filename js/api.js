@@ -44,43 +44,43 @@ function error(error) {
 }
 // Blok kode untuk melakukan request data json
 function getStandings() {
-    fetch(base_url + "competitions/PL/standings", {
+    fetch(`${base_url}competitions/${id_liga}/standings`, {
         method: "GET",
         headers: {
             "X-Auth-Token": API_KEY
         }
     })
-        .then(status)
-        .then(json)
-        .then(function (data) {
-            const result = data.standings[0].table
+    .then(status)
+    .then(json)
+    .then(function (data) {
+        const result = data.standings[0].table
             // Objek/array JavaScript dari response.json() masuk lewat data.
             // Menyusun komponen card artikel secara dinamis
             let standingsHTML = "";
             result.forEach(function (data) {
                 standingsHTML += `<tr>
-                    <td>${data.position}</td>
-                    <td>
-                        <a href="/pages/team.html?id=${data.team.id}" class="white-text truncate detail_team">
-                            <img class="responsive-img hide-on-small-only" width="40" height="auto" src="${data.team.crestUrl}"> 
-                            ${data.team.name}
-                        </a>
-                    </td>
-                    <td>${data.playedGames}</td>
-                    <td>${data.won}</td>
-                    <td>${data.draw}</td>
-                    <td>${data.lost}</td>
-                    <td>${data.goalsFor}</td>
-                    <td>${data.goalsAgainst}</td>
-                    <td>${data.goalDifference}</td>
-                    <td>${data.points}</td>
+                <td>${data.position}</td>
+                <td>
+                <a href="/pages/team.html?id=${data.team.id}" class="white-text truncate detail_team">
+                <img class="responsive-img hide-on-small-only" width="40" height="auto" src="${data.team.crestUrl}"> 
+                ${data.team.name}
+                </a>
+                </td>
+                <td>${data.playedGames}</td>
+                <td>${data.won}</td>
+                <td>${data.draw}</td>
+                <td>${data.lost}</td>
+                <td>${data.goalsFor}</td>
+                <td>${data.goalsAgainst}</td>
+                <td>${data.goalDifference}</td>
+                <td>${data.points}</td>
                 </tr>`
             });
 
             // Sisipkan komponen card ke dalam elemen dengan id #content
             document.querySelector(".body-standings").innerHTML = standingsHTML;
         })
-        .catch(error);
+    .catch(error);
 }
 
 function getTeamById() {
@@ -94,51 +94,76 @@ function getTeamById() {
             "X-Auth-Token": API_KEY
         }
     })
-        .then(status)
-        .then(json)
-        .then(function (data) {
+    .then(status)
+    .then(json)
+    .then(function (data) {
             // parsing data ke elemen HTML
             document.querySelector(".section-title").innerHTML = data.shortName;
             document.querySelector(".team-name").innerHTML = data.shortName;
             document.querySelector(".team-area").innerHTML = data.area.name;
             document.querySelector(".team-colour").innerHTML = data.clubColors;
-            document.querySelector(".team-websites").innerHTML = data.website;
+            document.querySelector(".team-website").innerHTML = `<a target="_blank" href="${data.website}">${data.website}</a>`;
             document.querySelector(".team-img").src = data.crestUrl;
 
             // Menyusun komponen card artikel secara dinamis
             let comp = '';
             data.activeCompetitions.forEach(function (el) {
+                tgl = new Date(el.lastUpdated);
                 comp += `
-                    <tr>
-                        <td>${el.name}</td>
-                        <td>${el.area.name}</td>
-                        <td>${el.lastUpdated}</td>
-                    </tr>
-                `;
-            });
+                <tr>
+                <td>${el.name}</td>
+                <td>${el.area.name}</td>
+                <td>${
+                  getDay(tgl) +
+                  "-" +
+                  getMonth(tgl) +
+                  "-" +
+                  tgl.getFullYear()
+              }</td>
+              </tr>
+              `;
+          });
             document.getElementById("active-competitions").innerHTML = comp;
 
             let squad = '';
             data.squad.forEach(function (el) {
                 tanggal = new Date(el.dateOfBirth);
                 squad += `
-                      <tr>
-                        <td>${el.name} </td>
-                        <td>${el.position}</td>
-                        <td>${el.shirtNumber == null ? "" : el.shirtNumber}</td>
-                        <td>${el.role}</td>
-                        <td>${el.dateOfBirth}</td>
-                        <td>${el.nationality}</td>
-                    </tr>
-                `;
-            });
+                <tr>
+                <td>${el.name} </td>
+                <td>${el.position}</td>
+                <td>${el.shirtNumber == null ? "" : el.shirtNumber}</td>
+                <td>${el.role}</td>
+                <td>${
+                  getDay(tanggal) +
+                  "-" +
+                  getMonth(tanggal) +
+                  "-" +
+                  tanggal.getFullYear()
+              }</td>
+              <td>${el.nationality}</td>
+              </tr>
+              `;
+          });
             document.getElementById("team-squad").innerHTML = squad;
         });
 }
 
-function getMatches() {
-    const today = new Date();
-    const day7 = toDateTime(addDays(new Date(), 7))
+function changeMatchDate() {
+  let s = document.getElementById("start").value;
+  let e = document.getElementById("end").value;
+  let tanggalAwal = s.split("-");
+  let dateAwal = new Date(tanggalAwal[0], tanggalAwal[1] - 1, tanggalAwal[2]);
+  let tanggalAkhir = e.split("-");
+  let dateAkhir = new Date(
+    tanggalAkhir[0],
+    tanggalAkhir[1] - 1,
+    tanggalAkhir[2]
+    );
+  getMatches(dateAwal, dateAkhir);
+}
+
+function getMatches( today = new Date(), day7 = toDateTime(addDays(new Date(), 7))) {
     let dd = getDay(today);
     let mm = getMonth(today);
     let yyyy = today.getFullYear();
@@ -152,19 +177,79 @@ function getMatches() {
             "X-Auth-Token": API_KEY
         }
     })
-        .then(status)
-        .then(json)
-        .then(function (data) {
-            console.log(data);
+    .then(status)
+    .then(json)
+    .then(function (data) {
             // Objek/array JavaScript dari response.json() masuk lewat data.
             // Menyusun komponen card artikel secara dinamis
             let matchesHTML = "";
-            result.forEach(function (data) {
+            data.matches.forEach(function (data) {
+                let tanggal = new Date(data.utcDate);
+                let waktu = Date2Time(tanggal);
+                let bulan = tanggal.toLocaleString("default", { month: "short" });
+                let hari = getDay(tanggal);
+                let tahun = tanggal.getFullYear();
+                matchesHTML += `<tr>
+                <td>${hari + " " + bulan + " " + tahun}</td>
+                <td>${waktu}</td>
+                <td>${data.status}</td>
+                <td class="valign-wrapper"><img class="responsive-img" width="20" height="auto" style="margin-right:5px"" src="https://crests.football-data.org/${
+                  data.homeTeam.id
+              }.svg"
+          }">${data.homeTeam.name}</td>
+          <td>${
+              data.score.fullTime.homeTeam == null
+              ? "-"
+              : data.score.fullTime.homeTeam
+          } : ${
+              data.score.fullTime.awayTeam == null
+              ? "-"
+              : data.score.fullTime.awayTeam
+          }</td>
+          <td class="valign-wrapper">${data.awayTeam.name}
+          <img class="responsive-img" width="20" height="auto" style="margin-left:5px"" src="https://crests.football-data.org/${
+              data.awayTeam.id
+          }.svg"
+      }"></td>
+      </tr>`
+  });
 
+            // Sisipkan komponen card ke dalam elemen dengan id #content
+            document.querySelector("#body-matches").innerHTML = matchesHTML;
+        })
+    .catch(error);
+}
+
+
+function getScores() {
+
+    fetch(`${base_url}competitions/${id_liga}/scorers`, {
+        method: "GET",
+        headers: {
+            "X-Auth-Token": API_KEY
+        }
+    })
+    .then(status)
+    .then(json)
+    .then(function (data) {
+            // Menyusun komponen card artikel secara dinamis
+            let scoresHTML = "";
+            let counter = 1;
+            data.scorers.forEach(function (data) {
+                scoresHTML += `
+                <tr>
+                <td>${counter}</td>
+                <td>${data.player.name}</td>
+                <td>${data.team.name}</td>
+                <td>${data.numberOfGoals}</td>
+                </tr>
+
+                `;
+                counter++;
             });
 
             // Sisipkan komponen card ke dalam elemen dengan id #content
-            document.querySelector(".body-matches").innerHTML = matchesHTML;
+            document.querySelector("#body-scores").innerHTML = scoresHTML;
         })
-        .catch(error);
+    .catch(error);
 }

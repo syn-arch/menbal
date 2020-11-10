@@ -4,13 +4,13 @@ document.addEventListener("DOMContentLoaded", function () {
     if ("serviceWorker" in navigator) {
         window.addEventListener("load", function () {
             navigator.serviceWorker
-                .register("/sw.js")
-                .then(function () {
-                    console.log("pendaftaran serviceWorker berhasil");
-                })
-                .catch(function () {
-                    console.log("pendaftaran serviceWorker gagal")
-                });
+            .register("/sw.js")
+            .then(function () {
+                console.log("pendaftaran serviceWorker berhasil");
+            })
+            .catch(function (e) {
+                console.log("pendaftaran serviceWorker gagal : " + e)
+            });
         });
     } else {
         console.log("serviceWorker belum didukung oleh browser ini");
@@ -56,14 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // load content
             const link = e.target.getAttribute("href").substr(1);
             loadPage(link);
-            console.log(link);
-            if (link == "home") {
-                getStandings();
-            }
-
-            if (link == "match") {
-                getMatches();
-            }
+            
         });
     });
 
@@ -85,6 +78,20 @@ document.addEventListener("DOMContentLoaded", function () {
         };
         xhr.open("GET", `pages/${page}.html`, true);
         xhr.send();
+
+        if (page == "home") {
+            getStandings();
+        }
+
+        if (page == "team") {
+            getTeamById();
+        }
+
+        if (page == "scores") {
+            getScores();
+        }
+        
+
     }
 
     let page = window.location.hash.substr(1);
