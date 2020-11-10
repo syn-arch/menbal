@@ -56,6 +56,14 @@ document.addEventListener("DOMContentLoaded", function () {
             // load content
             const link = e.target.getAttribute("href").substr(1);
             loadPage(link);
+            console.log(link);
+            if (link == "home") {
+                getStandings();
+            }
+
+            if (link == "match") {
+                getMatches();
+            }
         });
     });
 
