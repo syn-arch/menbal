@@ -13,12 +13,16 @@ document.addEventListener("DOMContentLoaded", function () {
         if (heightTop > 65) {
             nav.classList.remove("transparent");
             nav.classList.add("white");
+            nav.classList.add("z-depth-1");
+            nav.classList.remove("z-depth-0");
             textColor.forEach(function (el) {
                 el.classList.add("black-text");
             });
         } else {
             nav.classList.add("transparent");
             nav.classList.remove("white");
+            nav.classList.remove("z-depth-1");
+            nav.classList.add("z-depth-0");
             textColor.forEach(function (el) {
                 el.classList.remove("black-text");
             });
