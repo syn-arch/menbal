@@ -92,10 +92,17 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         
 
+        if (page == "favourite") {
+            getFavourites();
+        }
+        
+
     }
 
     let page = window.location.hash.substr(1);
     if (page == "") page = "home";
     loadPage(page);
+
+    
 
 });
