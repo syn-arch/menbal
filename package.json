@@ -10,7 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.1",
-    "materialize-css": "^1.0.0-rc.2"
+    "materialize-css": "^1.0.0-rc.2",
+    "web-push": "^3.4.4"
   },
   "devDependencies": {
     "eslint": "^7.13.0"

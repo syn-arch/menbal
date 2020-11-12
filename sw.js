@@ -12,7 +12,8 @@ const urlsToCache = [
     "/node_modules/@fortawesome/fontawesome-free/js/all.min.js",
     "/node_modules/materialize-css/dist/css/materialize.min.css",
     "/node_modules/materialize-css/dist/js/materialize.min.js",
-    "js/script.js",
+    "/js/script.js",
+    "/js/team.js",
     "/favicon.ico",
     "/img/ball.jpg",
     "/img/field.jpg",
@@ -26,12 +27,13 @@ const urlsToCache = [
     "/sw.js",
     "/manifest.json",
     "https://fonts.googleapis.com/css2?family=Poppins&display=swap",
+    "https://fonts.gstatic.com/s/poppins/v15/pxiEyp8kv8JHgFVrJJfecnFHGPc.woff2",
     "/js/idb.js",
     "/js/db.js",
     "/js/api.js"
 ];
 
-self.addEventListener('install', function (event) {
+self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(function (cache) {
@@ -40,7 +42,7 @@ self.addEventListener('install', function (event) {
     );
 })
 
-self.addEventListener('activate', function (event) {
+self.addEventListener('activate', event => {
     event.waitUntil(
         caches.keys()
             .then(function (cacheNames) {
@@ -55,7 +57,7 @@ self.addEventListener('activate', function (event) {
     );
 })
 
-self.addEventListener("fetch", function (event) {
+self.addEventListener("fetch", event => {
     const base_url = "https://api.football-data.org/v2/";
     if (event.request.url.indexOf(base_url) > -1) {
         event.respondWith(
@@ -73,4 +75,26 @@ self.addEventListener("fetch", function (event) {
             })
         )
     }
+});
+
+self.addEventListener('push', event => {
+    var body;
+    if (event.data) {
+        body = event.data.text();
+    } else {
+        body = 'Push message no payload';
+    }
+    var options = {
+        body: body,
+        badge: '/icon.png',
+        icon: '/icon.png',
+        vibrate: [100, 50, 100],
+        data: {
+            dateOfArrival: Date.now(),
+            primaryKey: 1
+        }
+    };
+    event.waitUntil(
+        self.registration.showNotification('Push Notification', options)
+    );
 });

@@ -98,7 +98,7 @@ function getStandings() {
                     <td>${data.position}</td>
                     <td>
                     <a href="/pages/team.html?id=${data.team.id}" class="white-text truncate detail_team">
-                    <img class="responsive-img hide-on-small-only" width="40" height="auto" src="${data.team.crestUrl}"> 
+                    <img class="responsive-img hide-on-small-only" alt="team image" width="40" height="auto" src="${data.team.crestUrl}"> 
                     ${data.team.name}
                     </a>
                     </td>
@@ -247,6 +247,42 @@ function getMatches(today = new Date(), day14 = toDateTime(addDays(new Date(), 1
     let mm14 = getMonth(day14);
     let yyyy14 = day14.getFullYear();
 
+    if ('caches' in window) {
+        caches.match(`${base_url}competitions/${id_liga}/matches?dateFrom=${yyyy}-${mm}-${dd}&dateTo=${yyyy14}-${mm14}-${dd14}`).then(function (response) {
+            if (response) {
+                response.json().then(function (data) {
+                    let matchesHTML = "";
+                    data.matches.forEach(function (data) {
+                        let tanggal = new Date(data.utcDate);
+                        let waktu = Date2Time(tanggal);
+                        let bulan = tanggal.toLocaleString("default", { month: "short" });
+                        let hari = getDay(tanggal);
+                        let tahun = tanggal.getFullYear();
+                        matchesHTML += `<tr>
+                                <td>${hari + " " + bulan + " " + tahun}</td>
+                                <td>${waktu}</td>
+                                <td>${data.status}</td>
+                                <td class="valign-wrapper"><img class="responsive-img" width="20" height="auto" style="margin-right:5px"" src="https://crests.football-data.org/${data.homeTeam.id}.svg">${data.homeTeam.name}</td>
+                                <td>${data.score.fullTime.homeTeam == null
+                                ? "-"
+                                : data.score.fullTime.homeTeam
+                            } : ${data.score.fullTime.awayTeam == null
+                                ? "-"
+                                : data.score.fullTime.awayTeam
+                            }</td>
+                                <td class="valign-wrapper">${data.awayTeam.name}
+                                <img class="responsive-img" width="20" height="auto" style="margin-left:5px"" src="https://crests.football-data.org/${data.awayTeam.id}.svg"
+                            }"></td>
+                            </tr>`
+                    });
+
+                    // Sisipkan komponen card ke dalam elemen dengan id #content
+                    document.querySelector("#body-matches").innerHTML = matchesHTML;
+                });
+            }
+        })
+    }
+
     fetch(`${base_url}competitions/${id_liga}/matches?dateFrom=${yyyy}-${mm}-${dd}&dateTo=${yyyy14}-${mm14}-${dd14}`, {
         method: "GET",
         headers: {
@@ -291,6 +327,31 @@ function getMatches(today = new Date(), day14 = toDateTime(addDays(new Date(), 1
 
 
 function getScores() {
+
+    if ('caches' in window) {
+        caches.match(`${base_url}competitions/${id_liga}/scorers`).then(function (response) {
+            if (response) {
+                response.json().then(function (data) {
+                    // Menyusun komponen card artikel secara dinamis
+                    let scoresHTML = "";
+                    let counter = 1;
+                    data.scorers.forEach(function (data) {
+                        scoresHTML += `
+                            <tr>
+                                <td>${counter}</td>
+                                <td>${data.player.name}</td>
+                                <td>${data.team.name}</td>
+                                <td>${data.numberOfGoals}</td>
+                            </tr>
+                        `;
+                        counter++;
+                    });
+                    // Sisipkan komponen card ke dalam elemen dengan id #content
+                    document.querySelector("#body-scores").innerHTML = scoresHTML;
+                });
+            }
+        })
+    }
 
     fetch(`${base_url}competitions/${id_liga}/scorers`, {
         method: "GET",
