@@ -22,6 +22,7 @@ const urlsToCache = [
     "/img/offline.svg",
     "/img/onboard.svg",
     "/icon.png",
+    "/maskable_icon.png",
     "/node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2",
     "/node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff2",
     "/sw.js",
