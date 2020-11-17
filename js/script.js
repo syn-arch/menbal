@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // load page
     let page = window.location.hash.substr(1);
-    if (page == "") page = "home";
+    if (page === "") page = "home";
     loadPage(page);
 
     // click action navbar
@@ -118,23 +118,26 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             console.log("Fitur notifikasi diijinkan.");
+            navigator.serviceWorker.ready.then(() => {
 
-            if (('PushManager' in window)) {
-                navigator.serviceWorker.getRegistration().then(function (registration) {
-                    registration.pushManager.subscribe({
-                        userVisibleOnly: true,
-                        applicationServerKey: urlBase64ToUint8Array("BPLUaT7XSMdbtcnKlplsIbWAINTDyB9JBYrM0FGNx0HzJRqHSbiUQXaunsm8irWSsaNUUDii0P8jvaVpKpxg2gk")
-                    }).then(function (subscribe) {
-                        console.log('Berhasil melakukan subscribe dengan endpoint: ', subscribe.endpoint);
-                        console.log('Berhasil melakukan subscribe dengan p256dh key: ', btoa(String.fromCharCode.apply(
-                            null, new Uint8Array(subscribe.getKey('p256dh')))));
-                        console.log('Berhasil melakukan subscribe dengan auth key: ', btoa(String.fromCharCode.apply(
-                            null, new Uint8Array(subscribe.getKey('auth')))));
-                    }).catch(function (e) {
-                        console.error('Tidak dapat melakukan subscribe ', e.message);
+                if (('PushManager' in window)) {
+                    navigator.serviceWorker.getRegistration().then(function (registration) {
+                        registration.pushManager.subscribe({
+                            userVisibleOnly: true,
+                            applicationServerKey: urlBase64ToUint8Array("BPLUaT7XSMdbtcnKlplsIbWAINTDyB9JBYrM0FGNx0HzJRqHSbiUQXaunsm8irWSsaNUUDii0P8jvaVpKpxg2gk")
+                        }).then(function (subscribe) {
+                            console.log('Berhasil melakukan subscribe dengan endpoint: ', subscribe.endpoint);
+                            console.log('Berhasil melakukan subscribe dengan p256dh key: ', btoa(String.fromCharCode.apply(
+                                null, new Uint8Array(subscribe.getKey('p256dh')))));
+                            console.log('Berhasil melakukan subscribe dengan auth key: ', btoa(String.fromCharCode.apply(
+                                null, new Uint8Array(subscribe.getKey('auth')))));
+                        }).catch(function (e) {
+                            console.error('Tidak dapat melakukan subscribe ', e.message);
+                        });
                     });
-                });
-            }
+                }
+            })
+
         });
     }
 

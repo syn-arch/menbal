@@ -59,7 +59,7 @@ function getStandings() {
                             <td>${data.position}</td>
                             <td>
                             <a href="/pages/team.html?id=${data.team.id}" class="white-text truncate detail_team">
-                            <img class="responsive-img hide-on-small-only" width="40" height="auto" src="${data.team.crestUrl}"> 
+                            <img alt="${data.team.name}" class="responsive-img hide-on-small-only" width="40" height="auto" src="${data.team.crestUrl}"> 
                             ${data.team.name}
                             </a>
                             </td>
@@ -98,7 +98,7 @@ function getStandings() {
                     <td>${data.position}</td>
                     <td>
                     <a href="/pages/team.html?id=${data.team.id}" class="white-text truncate detail_team">
-                    <img class="responsive-img hide-on-small-only" alt="team image" width="40" height="auto" src="${data.team.crestUrl}"> 
+                    <img alt="${data.team.name}" class="responsive-img hide-on-small-only" alt="team image" width="40" height="auto" src="${data.team.crestUrl}"> 
                     ${data.team.name}
                     </a>
                     </td>
@@ -121,8 +121,8 @@ function getStandings() {
 
 function getTeamById() {
     // Ambil nilai query parameter (?id=)
-    var urlParams = new URLSearchParams(window.location.search);
-    var teamID = urlParams.get("id");
+    const urlParams = new URLSearchParams(window.location.search);
+    const teamID = urlParams.get("id");
 
     return new Promise(function (resolve, reject) {
         if ('caches' in window) {

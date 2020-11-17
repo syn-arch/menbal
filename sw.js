@@ -1,91 +1,114 @@
-const CACHE_NAME = "menbal-v2";
-const urlsToCache = [
-    "/",
-    "/index.html",
-    "/pages/home.html",
-    "/pages/match.html",
-    "/pages/scores.html",
-    "/pages/team.html",
-    "/pages/favourite.html",
-    "/css/style.css",
-    "/node_modules/@fortawesome/fontawesome-free/css/all.min.css",
-    "/node_modules/@fortawesome/fontawesome-free/js/all.min.js",
-    "/node_modules/materialize-css/dist/css/materialize.min.css",
-    "/node_modules/materialize-css/dist/js/materialize.min.js",
-    "/js/script.js",
-    "/js/team.js",
-    "/favicon.ico",
-    "/img/ball.jpg",
-    "/img/field.jpg",
-    "/img/hero.jpg",
-    "/img/maps.svg",
-    "/img/offline.svg",
-    "/img/onboard.svg",
-    "/icon.png",
-    "/maskable_icon.png",
-    "/node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2",
-    "/node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff2",
-    "/sw.js",
-    "/manifest.json",
-    "https://fonts.googleapis.com/css2?family=Poppins&display=swap",
-    "https://fonts.gstatic.com/s/poppins/v15/pxiEyp8kv8JHgFVrJJfecnFHGPc.woff2",
-    "/js/idb.js",
-    "/js/db.js",
-    "/js/api.js"
-];
+importScripts(
+    "https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js"
+);
 
-self.addEventListener('install', event => {
-    event.waitUntil(
-        caches.open(CACHE_NAME)
-            .then(function (cache) {
-                return cache.addAll(urlsToCache);
-            })
+const { registerRoute } = workbox.routing;
+const { CacheFirst } = workbox.strategies;
+const { StaleWhileRevalidate } = workbox.strategies;
+const { CacheableResponsePlugin } = workbox.cacheableResponse;
+const { precacheAndRoute } = workbox.precaching;
+const { ExpirationPlugin } = workbox.expiration;
+
+if (workbox) {
+    console.log(`Workbox berhasil dimuat`);
+    precacheAndRoute([
+        { url: "/", revision: 1 },
+        { url: "/index.html", revision: 1 },
+        { url: "/pages/home.html", revision: 1 },
+        { url: "/pages/match.html", revision: 1 },
+        { url: "/pages/scores.html", revision: 1 },
+        { url: "/pages/team.html", revision: 1 },
+        { url: "/pages/favourite.html", revision: 1 },
+        { url: "/css/style.css", revision: 1 },
+        { url: "/node_modules/@fortawesome/fontawesome-free/css/all.min.css", revision: 1 },
+        { url: "/node_modules/@fortawesome/fontawesome-free/js/all.min.js", revision: 1 },
+        { url: "/node_modules/materialize-css/dist/css/materialize.min.css", revision: 1 },
+        { url: "/node_modules/materialize-css/dist/js/materialize.min.js", revision: 1 },
+        { url: "/js/script.js", revision: 1 },
+        { url: "/js/team.js", revision: 1 },
+        { url: "/favicon.ico", revision: 1 },
+        { url: "/img/ball.jpg", revision: 1 },
+        { url: "/img/field.jpg", revision: 1 },
+        { url: "/img/hero.jpg", revision: 1 },
+        { url: "/img/maps.svg", revision: 1 },
+        { url: "/img/offline.svg", revision: 1 },
+        { url: "/img/onboard.svg", revision: 1 },
+        { url: "/icon.png", revision: 1 },
+        { url: "/maskable_icon.png", revision: 1 },
+        { url: "/node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2", revision: 1 },
+        { url: "/node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff2", revision: 1 },
+        { url: "/sw.js", revision: 1 },
+        { url: "/manifest.json", revision: 1 },
+        { url: "https://fonts.googleapis.com/css2?family=Poppins&display=swap", revision: 1 },
+        { url: "https://fonts.gstatic.com/s/poppins/v15/pxiEyp8kv8JHgFVrJJfecnFHGPc.woff2", revision: 1 },
+        { url: "/js/idb.js", revision: 1 },
+        { url: "/js/db.js", revision: 1 }
+    ]);
+
+    registerRoute(
+        ({ request }) => request.destination === "image",
+        new CacheFirst({
+            cacheName: "images-cache",
+            plugins: [
+                new CacheableResponsePlugin({
+                    statuses: [0, 200],
+                }),
+                new ExpirationPlugin({
+                    maxEntries: 100,
+                    maxAgeSeconds: 30 * 24 * 60 * 60,
+                }),
+            ],
+        })
     );
-})
 
-self.addEventListener('activate', event => {
-    event.waitUntil(
-        caches.keys()
-            .then(function (cacheNames) {
-                return Promise.all(
-                    cacheNames.map(function (cacheName) {
-                        if (cacheName != CACHE_NAME) {
-                            return caches.delete(cacheName);
-                        }
-                    })
-                );
-            })
+    workbox.routing.registerRoute(
+        new RegExp("https://api.football-data.org/v2/"),
+        new StaleWhileRevalidate()
     );
-})
 
-self.addEventListener("fetch", event => {
-    const base_url = "https://api.football-data.org/v2/";
-    if (event.request.url.indexOf(base_url) > -1) {
-        event.respondWith(
-            caches.open(CACHE_NAME).then(function (cache) {
-                return fetch(event.request).then(function (response) {
-                    cache.put(event.request.url, response.clone());
-                    return response;
-                })
-            })
-        );
-    } else {
-        event.respondWith(
-            caches.match(event.request, { ignoreSearch: true }).then(function (response) {
-                return response || fetch(event.request);
-            })
-        )
-    }
-});
+    // Menyimpan cache dari CSS Google Fonts
+    workbox.routing.registerRoute(
+        /^https:\/\/fonts\.googleapis\.com/,
+        new StaleWhileRevalidate({
+            cacheName: "google-fonts-stylesheets",
+        })
+    );
+
+    // Caching Google Fonts
+    registerRoute(
+        /^https:\/\/fonts\.gstatic\.com/,
+        new CacheFirst({
+            cacheName: "google-fonts-webfonts",
+            plugins: [
+                new CacheableResponsePlugin({
+                    statuses: [0, 200],
+                }),
+                new ExpirationPlugin({
+                    maxAgeSeconds: 60 * 60 * 24 * 365,
+                    maxEntries: 30,
+                }),
+            ],
+        })
+    );
+
+    workbox.routing.registerRoute(
+        /\.(?:js|css)$/,
+        new StaleWhileRevalidate({
+            cacheName: "static-resources",
+        })
+    );
+} else {
+    console.log(`Workbox gagal dimuat`);
+}
 
 self.addEventListener('push', event => {
-    var body;
+    let body;
     if (event.data) {
         body = event.data.text();
     } else {
         body = 'Push message no payload';
     }
-    var options = {
+    const options = {
         body: body,
         badge: '/icon.png',
         icon: '/icon.png',
